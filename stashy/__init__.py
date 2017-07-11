@@ -1,4 +1,6 @@
-from stashy.Stashy import Stashy
+import os
+
+from stashy.stashy import Stashy
 
 __author__ = 'Stashy.io'
 __version__ = '0.0.1'
@@ -7,11 +9,15 @@ __version__ = '0.0.1'
 STASHY = None
 
 
-def authorize(api_key):
+def authorize(api_key=None):
     """
     Create a resource service client by name using the default session.
     """
-    return _get_stashy().resource(api_key)
+    if api_key is None:
+        api_key = os.environ.get('STASHY_AP_KEY')
+        if api_key is None:
+            raise Exception("STASHY_API_KEY env variable not set")
+    return _get_stashy(api_key)
 
 
 def setup_stashy(api_key):
@@ -26,9 +32,9 @@ def setup_stashy(api_key):
 
 def _get_stashy(api_key):
     """
-    Get the default session, creating one if needed.
-    :rtype: :py:class:`~boto3.session.Session`
-    :return: The default session
+    Get the stashy object, creating one if needed.
+    :rtype: :py:class:`~stashy.Stashy`
+    :return: The stashy object
     """
     if STASHY is None:
         setup_stashy(api_key)

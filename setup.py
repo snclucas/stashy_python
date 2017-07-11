@@ -14,7 +14,8 @@ VERSION_RE = re.compile(r'''__version__ = ['"]([0-9.]+)['"]''')
 
 
 requires = [
-    'requests>=2.18.1'
+    'requests>=2.18.1',
+    'urllib3>=1.21.1'
 ]
 
 

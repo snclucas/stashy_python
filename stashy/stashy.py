@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 
 
 class Stashy:
+    base_url = 'https://stashy.io/api';
     """
     A session stores configuration state and allows you to create service
     clients and resources.
@@ -16,7 +17,9 @@ class Stashy:
     def __init__(self, api_key=None):
         self.headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + api_key}
 
-    def get(self, table, filter_by=None, sort_by=None, order_by=None):
+    def get(self, endpoint, filter_by=None, sort_by=None, order_by=None):
+        if isinstance(endpoint, str) is False:
+            raise Exception("Endpoint is not a valid string")
         query_params = ""
         if filter_by is not None:
             query_params = '?' + urlencode(filter_by)
@@ -26,23 +29,26 @@ class Stashy:
             if order_by.lower() == 'asc' or order_by == 1 or order_by.lower() == 'desc' or order_by == -1:
                 query_params = query_params + '&order=' + order_by
 
-        url = 'https://stashy.io/api/d/' + table + '/docs' + query_params
+        url = self.base_url + '/d/' + endpoint + '/docs' + query_params
         r = requests.get(url, headers=self.headers)
-        json_data = r.json()
+
         if r.status_code == 200:
+            json_data = r.json()
             return {
                 "url": url,
                 "count": len(json_data),
                 "data": json_data
             }
         else:
-            return json_data
+            return {"status": r.status_code, "message": r.reason}
 
-    def save(self, table, data=None, explode=None):
+    def save(self, endpoint, data=None, explode=None):
+        if isinstance(endpoint, str) is False:
+            raise Exception("Endpoint is not a valid string")
         query_params = ""
         if explode is not None:
-            query_params = '?' + urlencode({"ss:explode": explode})
-        url = 'https://stashy.io/api/d/' + table + '/docs' + query_params
+            query_params = '?st::explode=' + explode
+        url = self.base_url + '/d/' + endpoint + '/docs' + query_params
         r = requests.post(url, headers=self.headers, data=json.dumps(data))
         json_data = r.json()
         if r.status_code == 200:
@@ -53,3 +59,20 @@ class Stashy:
             }
         else:
             return json_data
+
+    def delete_all(self, endpoint):
+        if isinstance(endpoint, str) is False:
+            raise Exception("Endpoint is not a valid string")
+        url = self.base_url + '/d/' + endpoint + '/docs/delete_all'
+        r = requests.delete(url, headers=self.headers)
+        return r.json()
+
+    def delete(self, endpoint, filter_by=None):
+        if isinstance(endpoint, str) is False:
+            raise Exception("Endpoint is not a valid string")
+        query_params = ""
+        if filter_by is not None:
+            query_params = '?' + urlencode(filter_by)
+        url = self.base_url + '/d/' + endpoint + '/docs/delete' + query_params
+        r = requests.delete(url, headers=self.headers)
+        return r.json()

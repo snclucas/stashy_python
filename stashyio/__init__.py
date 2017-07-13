@@ -3,7 +3,7 @@ import os
 from stashyio.stashy import Stashy
 
 __author__ = 'Stashy.io'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 # The default Boto3 session; autoloaded when needed.
 STASHY = None

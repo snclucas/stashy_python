@@ -68,7 +68,6 @@ class Stashy:
         return r.json()
 
     def delete(self, endpoint, filter_by=None):
-        print(filter_by['st::filter'])
         if isinstance(endpoint, str) is False:
             raise Exception("Endpoint is not a valid string")
         query_params = ""
@@ -78,6 +77,5 @@ class Stashy:
             else:
                 query_params = '?st::filter=' + json.dumps(filter_by['st::filter']).replace(" ", "")
         url = self.base_url + '/d/' + endpoint + '/docs/delete' + query_params
-        print(url)
         r = requests.delete(url, headers=self.headers)
-        return r.text
+        return r.json()

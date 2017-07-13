@@ -20,33 +20,25 @@ requires = [
 
 
 def get_version():
-    init = open(os.path.join(ROOT, 'stashy', '__init__.py')).read()
+    init = open(os.path.join(ROOT, 'stashyio', '__init__.py')).read()
     return VERSION_RE.search(init).group(1)
 
 
 setup(
-    name='stashy',
+    name='stashyio',
     version=get_version(),
     description='The Stashy SDK for Python',
-    long_description=open('README.rst').read(),
-    author='Stashy.io',
+    author='Stashy',
+    author_email='dev@stashyio.io',
     url='https://github.com/snclucas/stashy_python',
+    download_url='https://github.com/snclucas/stashy_python',
     scripts=[],
-    packages=find_packages(exclude=['tests*']),
-    package_data={
-        'boto3': [
-            'data/aws/resources/*.json',
-            'examples/*.rst'
-        ]
-    },
-    include_package_data=True,
-    install_requires=requires,
+    packages=['stashyio'],
     license="MIT",
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Natural Language :: English',
-        'License :: OSI Approved :: MIT',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',

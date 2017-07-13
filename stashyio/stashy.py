@@ -6,8 +6,7 @@ from urllib.parse import urlencode
 
 
 class Stashy:
-    # base_url = 'https://stashy.io/api'
-    base_url = 'http://localhost:8000'
+    base_url = 'https://stashy.io/api'
     """
     A session stores configuration state and allows you to create service
     clients and resources.

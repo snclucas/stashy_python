@@ -6,7 +6,8 @@ from urllib.parse import urlencode
 
 
 class Stashy:
-    base_url = 'https://stashy.io/api';
+    # base_url = 'https://stashy.io/api'
+    base_url = 'http://localhost:8000'
     """
     A session stores configuration state and allows you to create service
     clients and resources.
@@ -68,11 +69,16 @@ class Stashy:
         return r.json()
 
     def delete(self, endpoint, filter_by=None):
+        print(filter_by['st::filter'])
         if isinstance(endpoint, str) is False:
             raise Exception("Endpoint is not a valid string")
         query_params = ""
         if filter_by is not None:
-            query_params = '?' + urlencode(filter_by)
+            if 'st::filter' not in filter_by:
+                query_params = '?' + urlencode(filter_by)
+            else:
+                query_params = '?st::filter=' + json.dumps(filter_by['st::filter']).replace(" ", "")
         url = self.base_url + '/d/' + endpoint + '/docs/delete' + query_params
+        print(url)
         r = requests.delete(url, headers=self.headers)
-        return r.json()
+        return r.text

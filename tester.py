@@ -18,7 +18,7 @@ order_by = 'ASC'
 r = stashy.get('test', filter_by=filter_by, sort_by=sort_by, order_by=order_by)
 print(r)
 
-r = stashy.delete('test', filter_by=filter_by_json)
+r = stashy.delete('test', filter_by=filter_by)
 print(r)
 
 r = stashy.delete_all('test')

@@ -10,7 +10,6 @@ docs_to_insert = {"docs": [
 r = stashy.save('test', data=docs_to_insert, explode="docs")
 print(r)
 
-
 filter_by = {'sensor1': '34.45', 'sensor2': '345.23'}
 filter_by_json = {'st::filter': {'sensor1': '34.45', 'sensor2': '345.23'}}
 sort_by = 'sensor1'
